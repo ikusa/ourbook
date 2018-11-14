@@ -38,11 +38,18 @@ class Stuff extends Component<Props, State> {
   render() {
     let {users} = this.state;
     let isEmpty = users.length === 0;
+    let navigationsButton = [
+      {
+        header: 'Posts',
+        buttonName: 'Posts',
+        path: '/user/posts/',
+      },
+    ];
     return (
       !isEmpty && (
         <div>
           <h2>Users</h2>
-          <Table rows={users} />
+          <Table rows={users} navigationsButton={navigationsButton} />
         </div>
       )
     );
