@@ -47,6 +47,7 @@ class Posts extends Component<Props, State> {
                 return (
                   <div style={{margin: 10}}>
                     <Card
+                      category="Posts"
                       title={post.title}
                       body={post.body}
                       cardAction={this.cardAction}

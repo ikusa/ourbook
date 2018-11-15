@@ -12,6 +12,7 @@ type Props = {
   id: number,
   title: string,
   body: string,
+  category: string,
   cardAction: Function,
 };
 const styles = {
@@ -33,7 +34,7 @@ const styles = {
 };
 
 function SimpleCard(props: Props) {
-  const {classes, title, body, cardAction, id} = props;
+  const {classes, title, body, cardAction, id, category} = props;
 
   return (
     <Card className={classes.card}>
@@ -43,7 +44,7 @@ function SimpleCard(props: Props) {
           color="textSecondary"
           gutterBottom
         >
-          Post
+          {category}
         </Typography>
         <Typography variant="h5" component="h2">
           {title}
