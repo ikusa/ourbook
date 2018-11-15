@@ -1,30 +1,12 @@
 //@flow
 import React, {Component} from 'react';
 import Table from '../components/Table';
-type Props = {};
-type User = {
-  id: number,
-  name: string,
-  username: string,
-  email: string,
-  address: {
-    street: string,
-    suite: string,
-    city: string,
-    zipcode: string,
-    geo: {
-      lat: string,
-      lng: string,
-    },
-  },
-  phone: string,
-  website: string,
-  company: {
-    name: string,
-    catchPhrase: string,
-    bs: string,
-  },
+import type {User} from '../types/User';
+type Props = {
+  users: Array<User>,
+  addUsers: Function,
 };
+
 type State = {users: Array<User>};
 class Stuff extends Component<Props, State> {
   state = {
@@ -33,10 +15,10 @@ class Stuff extends Component<Props, State> {
   async componentWillMount() {
     let responses = await fetch('https://jsonplaceholder.typicode.com/users');
     let users = await responses.json();
-    this.setState({users: [...users]});
+    this.props.addUsers(users);
   }
   render() {
-    let {users} = this.state;
+    let {users} = this.props;
     let isEmpty = users.length === 0;
     let navigationsButton = [
       {
@@ -60,5 +42,4 @@ class Stuff extends Component<Props, State> {
     );
   }
 }
-
 export default Stuff;

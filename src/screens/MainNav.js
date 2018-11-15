@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {Route} from 'react-router-dom';
 import SideNav from '../components/SideNav';
-import Users from './Users';
+import UsersContainer from '../container/UsersContainer';
 import Posts from './Posts';
 import Albums from './Albums';
 
@@ -23,7 +23,7 @@ class MainNav extends Component<{}> {
     return (
       <div>
         <div className="content">
-          <Route exact path="/" component={Users} />
+          <Route exact path="/" component={UsersContainer} />
           <Route exact path="/posts" component={Posts} />
           <Route exact path="/user/posts/:id" component={Posts} />
           <Route path="/albums" component={Albums} />
