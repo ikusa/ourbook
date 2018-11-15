@@ -6,6 +6,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 - User can add, edit and delete comment << i don't implement this feature as the API from https://jsonplaceholder.typicode.com/ isn't providing comment mutation.
 - Reducers only applied to Users Screen because I think it is not necessary to use reducers for application with little to none passing data between components. So I only applied this to show that I could implement it.
+- Testings, as for testing I don't have enough time to create test for this app so sorry I don't complete this part.
 
 ## Available Scripts
 
