@@ -42,7 +42,7 @@ class Albums extends Component<Props, State> {
     let {albums} = this.state;
     return (
       <div>
-        <h2>INSERT_USER_NAME albums</h2>
+        <h2>Albums</h2>
         <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
           {albums
             ? albums.map((album) => {

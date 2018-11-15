@@ -44,7 +44,7 @@ class Posts extends Component<Props, State> {
     let {posts} = this.state;
     return (
       <div>
-        <h2>INSERT_USER_NAME Posts</h2>
+        <h2>Posts</h2>
         <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
           {posts
             ? posts.map((post) => {
