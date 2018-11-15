@@ -19,9 +19,11 @@ type Props = {
   title: string,
   body: string,
   category: string,
+  isCreating: boolean,
   isEditing: boolean,
   cardAction: Function,
   toggleEdit: Function,
+  handleSubmit: Function,
   handleDelete: Function,
 };
 const styles = {
@@ -56,6 +58,7 @@ class SimpleCard extends React.Component<Props, State> {
       cardAction,
       id,
       category,
+      isCreating,
       isEditing,
       toggleEdit,
       handleDelete,
@@ -77,22 +80,32 @@ class SimpleCard extends React.Component<Props, State> {
             >
               {category}
             </Typography>
-            <div>
+            {isCreating ? (
               <ButtonBase
                 size="small"
                 color="secondary"
-                onClick={toggleEdit(id, this.state)}
+                onClick={this._handleSubmit}
               >
-                {isEditing ? <Check /> : <Edit />}
+                <Check />
               </ButtonBase>
-              <ButtonBase
-                size="small"
-                color="primary"
-                onClick={handleDelete(id)}
-              >
-                <Delete />
-              </ButtonBase>
-            </div>
+            ) : (
+              <div>
+                <ButtonBase
+                  size="small"
+                  color="secondary"
+                  onClick={toggleEdit(id, this.state)}
+                >
+                  {isEditing ? <Check /> : <Edit />}
+                </ButtonBase>
+                <ButtonBase
+                  size="small"
+                  color="primary"
+                  onClick={handleDelete(id)}
+                >
+                  <Delete />
+                </ButtonBase>
+              </div>
+            )}
           </div>
 
           <Typography variant="h5" component="h2">
@@ -129,6 +142,11 @@ class SimpleCard extends React.Component<Props, State> {
   };
   handleBodyChange = (event) => {
     this.setState({body: event.target.value});
+  };
+  _handleSubmit = () => {
+    this.setState({title: '', body: ''});
+    this.props.handleSubmit(this.state)();
+    alert('submitted, scroll to bottom to check !!');
   };
 }
 

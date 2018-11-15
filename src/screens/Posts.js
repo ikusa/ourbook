@@ -46,19 +46,34 @@ class Posts extends Component<Props, State> {
       <div>
         <h2>Posts</h2>
         <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
+          <div style={{margin: 10}}>
+            <Card
+              category="Posts"
+              title={''}
+              body={''}
+              cardAction={this.cardAction}
+              id={0}
+              isCreating={true}
+              isEditing={true}
+              toggleEdit={this.toggleEditPost}
+              handleDelete={this.handleDeletePost}
+              handleSubmit={this.handleSubmit}
+            />
+          </div>
           {posts
             ? posts.map((post) => {
                 return (
                   <div style={{margin: 10}} key={post.id}>
                     <Card
                       category="Posts"
-                      title={post.id}
+                      title={post.title}
                       body={post.body}
                       cardAction={this.cardAction}
                       id={post.id}
                       isEditing={post.isEditing}
                       toggleEdit={this.toggleEditPost}
                       handleDelete={this.handleDeletePost}
+                      handleSubmit={this.handleSubmit}
                     />
                   </div>
                 );
@@ -147,6 +162,30 @@ class Posts extends Component<Props, State> {
 
       this.setState({
         posts,
+      });
+    };
+  };
+  handleSubmit = (input: {title: string, body: string}) => {
+    return async () => {
+      let {title, body} = input;
+      let responses = await fetch(
+        'https://jsonplaceholder.typicode.com/posts',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            title,
+            body,
+            userId: 1,
+          }),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+        },
+      );
+      let postResponse = await responses.json();
+      console.log('posts response ', postResponse);
+      this.setState({
+        posts: [...this.state.posts, postResponse],
       });
     };
   };
