@@ -12,15 +12,6 @@ class ResponsiveDialog extends React.Component {
   state = {
     open: false,
   };
-
-  handleClickOpen = () => {
-    this.setState({open: true});
-  };
-
-  handleClose = () => {
-    this.setState({open: false});
-  };
-
   render() {
     const {fullScreen} = this.props;
 
@@ -53,6 +44,13 @@ class ResponsiveDialog extends React.Component {
       </div>
     );
   }
+  handleClickOpen = () => {
+    this.setState({open: true});
+  };
+
+  handleClose = () => {
+    this.setState({open: false});
+  };
 }
 
 ResponsiveDialog.propTypes = {

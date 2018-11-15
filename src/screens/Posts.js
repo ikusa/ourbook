@@ -13,6 +13,7 @@ type Post = {
   id: number,
   title: string,
   body: string,
+  isEditing: boolean,
   showComments: boolean,
   comments: Array<Comment>,
 };
@@ -34,6 +35,9 @@ class Posts extends Component<Props, State> {
     }
     let responses = await fetch(postsUrl);
     let posts = await responses.json();
+    posts.map((post) => {
+      return {...post, isEditing: false};
+    });
     this.setState({posts: [...posts]});
   }
   render() {
@@ -52,6 +56,8 @@ class Posts extends Component<Props, State> {
                       body={post.body}
                       cardAction={this.cardAction}
                       id={post.id - 1}
+                      isEditing={post.isEditing}
+                      toggleEdit={this.toggleEditPost}
                     />
                   </div>
                 );
@@ -72,13 +78,13 @@ class Posts extends Component<Props, State> {
         }}
       >
         {post.showComments ? <Comments comments={post.comments} /> : null}
-        <Button onClick={this.mutateShowComment(id)} size="small">
+        <Button onClick={this.toggleShowComment(id)} size="small">
           {post.showComments ? <p>Hide Comment</p> : <p>Show Comment</p>}
         </Button>
       </div>
     );
   };
-  mutateShowComment = (id: number) => {
+  toggleShowComment = (id: number) => {
     return async () => {
       let posts = [...this.state.posts];
       posts[id].showComments = !posts[id].showComments;
@@ -88,6 +94,31 @@ class Posts extends Component<Props, State> {
         let responses = await fetch(commentsUrl);
         let comments = await responses.json();
         posts[id].comments = comments;
+      }
+      this.setState({
+        posts,
+      });
+    };
+  };
+  toggleEditPost = (id: number, postData: {title: string, body: string}) => {
+    return async () => {
+      let posts = [...this.state.posts];
+      posts[id].isEditing = !posts[id].isEditing;
+      if (!posts[id].isEditing) {
+        let postsUrl = `https://jsonplaceholder.typicode.com/posts/1${id}`;
+        let responses = await fetch(postsUrl, {
+          method: 'PUT',
+          body: JSON.stringify({
+            id,
+            title: postData.title,
+            body: postData.body,
+          }),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+        });
+        let post = await responses.json();
+        posts[id] = {...posts[id], post};
       }
       this.setState({
         posts,
