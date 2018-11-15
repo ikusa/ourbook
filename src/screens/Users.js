@@ -44,6 +44,11 @@ class Stuff extends Component<Props, State> {
         buttonName: 'Posts',
         path: '/user/posts/',
       },
+      {
+        header: 'Albums',
+        buttonName: 'Albums',
+        path: '/user/albums/',
+      },
     ];
     return (
       !isEmpty && (

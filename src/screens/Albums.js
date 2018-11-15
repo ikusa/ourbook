@@ -2,8 +2,9 @@
 import React, {Component} from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '../components/Card';
+import ImgMediaCard from '../components/Photos';
 
-type Photos = {
+type Photo = {
   albumId: string,
   id: string,
   title: string,
@@ -15,7 +16,7 @@ type Album = {
   id: number,
   title: string,
   showPhotos: boolean,
-  photos: Array<Photos>,
+  photos: Array<Photo>,
 };
 type Props = {
   match: Object,
@@ -71,7 +72,7 @@ class Albums extends Component<Props, State> {
           flexDirection: 'column',
         }}
       >
-        {album.showPhotos ? <p>this is photos</p> : null}
+        {album.showPhotos ? <ImgMediaCard photos={album.photos} /> : null}
         <Button onClick={this.mutateShowPhotos(id)} size="small">
           {album.showPhotos ? <p>Hide photos</p> : <p>Show photos</p>}
         </Button>
