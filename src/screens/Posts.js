@@ -183,7 +183,6 @@ class Posts extends Component<Props, State> {
         },
       );
       let postResponse = await responses.json();
-      console.log('posts response ', postResponse);
       this.setState({
         posts: [...this.state.posts, postResponse],
       });
