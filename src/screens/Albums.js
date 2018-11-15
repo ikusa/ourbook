@@ -53,6 +53,7 @@ class Albums extends Component<Props, State> {
                       title={album.title}
                       cardAction={this.cardAction}
                       id={album.id - 1}
+                      isAlbum={true}
                     />
                   </div>
                 );

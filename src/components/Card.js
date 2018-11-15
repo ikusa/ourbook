@@ -21,6 +21,7 @@ type Props = {
   category: string,
   isCreating: boolean,
   isEditing: boolean,
+  isAlbum: boolean,
   cardAction: Function,
   toggleEdit: Function,
   handleSubmit: Function,
@@ -62,6 +63,7 @@ class SimpleCard extends React.Component<Props, State> {
       isEditing,
       toggleEdit,
       handleDelete,
+      isAlbum,
     } = this.props;
     return (
       <Card className={classes.card}>
@@ -80,32 +82,34 @@ class SimpleCard extends React.Component<Props, State> {
             >
               {category}
             </Typography>
-            {isCreating ? (
-              <ButtonBase
-                size="small"
-                color="secondary"
-                onClick={this._handleSubmit}
-              >
-                <Check />
-              </ButtonBase>
-            ) : (
-              <div>
+            {!isAlbum ? (
+              isCreating ? (
                 <ButtonBase
                   size="small"
                   color="secondary"
-                  onClick={toggleEdit(id, this.state)}
+                  onClick={this._handleSubmit}
                 >
-                  {isEditing ? <Check /> : <Edit />}
+                  <Check />
                 </ButtonBase>
-                <ButtonBase
-                  size="small"
-                  color="primary"
-                  onClick={handleDelete(id)}
-                >
-                  <Delete />
-                </ButtonBase>
-              </div>
-            )}
+              ) : (
+                <div>
+                  <ButtonBase
+                    size="small"
+                    color="secondary"
+                    onClick={toggleEdit(id, this.state)}
+                  >
+                    {isEditing ? <Check /> : <Edit />}
+                  </ButtonBase>
+                  <ButtonBase
+                    size="small"
+                    color="primary"
+                    onClick={handleDelete(id)}
+                  >
+                    <Delete />
+                  </ButtonBase>
+                </div>
+              )
+            ) : null}
           </div>
 
           <Typography variant="h5" component="h2">
