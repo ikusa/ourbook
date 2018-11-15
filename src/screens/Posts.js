@@ -49,15 +49,16 @@ class Posts extends Component<Props, State> {
           {posts
             ? posts.map((post) => {
                 return (
-                  <div style={{margin: 10}}>
+                  <div style={{margin: 10}} key={post.id}>
                     <Card
                       category="Posts"
-                      title={post.title}
+                      title={post.id}
                       body={post.body}
                       cardAction={this.cardAction}
-                      id={post.id - 1}
+                      id={post.id}
                       isEditing={post.isEditing}
                       toggleEdit={this.toggleEditPost}
+                      handleDelete={this.handleDeletePost}
                     />
                   </div>
                 );
@@ -68,58 +69,85 @@ class Posts extends Component<Props, State> {
     );
   }
   cardAction = (id: number) => {
-    let post = this.state.posts[id];
-    return (
-      <div
-        style={{
-          display: 'flex',
-          flex: 1,
-          flexDirection: 'column',
-        }}
-      >
-        {post.showComments ? <Comments comments={post.comments} /> : null}
-        <Button onClick={this.toggleShowComment(id)} size="small">
-          {post.showComments ? <p>Hide Comment</p> : <p>Show Comment</p>}
-        </Button>
-      </div>
-    );
+    let post = this.state.posts.find((post) => post.id === id);
+    if (post) {
+      return (
+        <div
+          style={{
+            display: 'flex',
+            flex: 1,
+            flexDirection: 'column',
+          }}
+        >
+          {post.showComments ? <Comments comments={post.comments} /> : null}
+          <Button onClick={this.toggleShowComment(id)} size="small">
+            {post.showComments ? <p>Hide Comment</p> : <p>Show Comment</p>}
+          </Button>
+        </div>
+      );
+    }
   };
   toggleShowComment = (id: number) => {
     return async () => {
       let posts = [...this.state.posts];
-      posts[id].showComments = !posts[id].showComments;
-      if (posts[id].showComments) {
-        let commentsUrl = `https://jsonplaceholder.typicode.com/posts/${id +
-          1}/comments`;
-        let responses = await fetch(commentsUrl);
-        let comments = await responses.json();
-        posts[id].comments = comments;
+      let post = posts.find((post) => post.id === id);
+      if (post) {
+        post.showComments = !post.showComments;
+        if (post.showComments) {
+          let commentsUrl = `https://jsonplaceholder.typicode.com/posts/${id +
+            1}/comments`;
+          let responses = await fetch(commentsUrl);
+          let comments = await responses.json();
+          post.comments = comments;
+        }
+        this.setState({
+          posts,
+        });
       }
-      this.setState({
-        posts,
-      });
     };
   };
   toggleEditPost = (id: number, postData: {title: string, body: string}) => {
     return async () => {
       let posts = [...this.state.posts];
-      posts[id].isEditing = !posts[id].isEditing;
-      if (!posts[id].isEditing) {
-        let postsUrl = `https://jsonplaceholder.typicode.com/posts/1${id}`;
-        let responses = await fetch(postsUrl, {
-          method: 'PUT',
-          body: JSON.stringify({
-            id,
-            title: postData.title,
-            body: postData.body,
-          }),
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-          },
+      let post = posts.find((post) => post.id === id);
+      if (post) {
+        post.isEditing = !post.isEditing;
+        if (!post.isEditing) {
+          let postsUrl = `https://jsonplaceholder.typicode.com/posts/1${id}`;
+          let responses = await fetch(postsUrl, {
+            method: 'PUT',
+            body: JSON.stringify({
+              id,
+              title: postData.title,
+              body: postData.body,
+            }),
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          });
+          let postResponse = await responses.json();
+          post = {...post, postResponse};
+        }
+        this.setState({
+          posts,
         });
-        let post = await responses.json();
-        posts[id] = {...posts[id], post};
       }
+    };
+  };
+  handleDeletePost = (id: number) => {
+    return async () => {
+      let posts = [...this.state.posts];
+      let postsUrl = `https://jsonplaceholder.typicode.com/posts/1${id}`;
+      await fetch(postsUrl, {
+        method: 'DELETE',
+      });
+      console.log('id >>', id);
+      console.log('before >>', posts);
+      posts = posts.filter((post) => {
+        return post.id === id ? false : true;
+      });
+      console.log('after >>', posts);
+
       this.setState({
         posts,
       });

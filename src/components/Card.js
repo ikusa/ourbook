@@ -22,6 +22,7 @@ type Props = {
   isEditing: boolean,
   cardAction: Function,
   toggleEdit: Function,
+  handleDelete: Function,
 };
 const styles = {
   card: {
@@ -57,6 +58,7 @@ class SimpleCard extends React.Component<Props, State> {
       category,
       isEditing,
       toggleEdit,
+      handleDelete,
     } = this.props;
     return (
       <Card className={classes.card}>
@@ -83,7 +85,11 @@ class SimpleCard extends React.Component<Props, State> {
               >
                 {isEditing ? <Check /> : <Edit />}
               </ButtonBase>
-              <ButtonBase size="small" color="black">
+              <ButtonBase
+                size="small"
+                color="primary"
+                onClick={handleDelete(id)}
+              >
                 <Delete />
               </ButtonBase>
             </div>
