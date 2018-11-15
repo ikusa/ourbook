@@ -141,12 +141,9 @@ class Posts extends Component<Props, State> {
       await fetch(postsUrl, {
         method: 'DELETE',
       });
-      console.log('id >>', id);
-      console.log('before >>', posts);
       posts = posts.filter((post) => {
         return post.id === id ? false : true;
       });
-      console.log('after >>', posts);
 
       this.setState({
         posts,
